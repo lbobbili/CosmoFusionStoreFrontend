@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h5>View Vendor Signup Requests</h5>
+        <div class="row">
+          <div class="col-sm-3"></div>
+          <div class="col-sm-6"><div *ngIf="!hasPendingSignupRequests" class="alert alert-danger">No Signup Requests found.</div></div>
+        </div>
+        <table *ngIf="hasPendingSignupRequests" class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Vendor Company</th>
+                <th scope="col">Vendor Name</th>
+                <th scope="col">Details About Vendor</th>
+                <th scope="col">Brand Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vendor of vendorDetails; let i = index">
+                <th scope="row">{{i+1}}.</th>
+                <td>{{ vendor.vendorCompany }}</td>
+                <td>{{ vendor.vendorName }}</td>
+                <td>{{ vendor.vendorDetails }}</td>
+                <td>{{ vendor.brandName }}</td>
+                <td>{{ vendor.email }}</td>
+                <td>{{ vendor.phoneNumber }}</td>
+                <td><button class="btn btn-danger" (click)="onSignupReject(vendor.vendorName, i)">Reject</button></td>
+                <td><button class="btn btn-success" (click)="onSignupApprove(vendor.vendorName, i)">Approve</button></td>
+              </tr>
+            </tbody>
+        </table>        
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-12">
+      <h5>View Vendor Product Requests</h5>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6"><div *ngIf="!hasPendingProductRequests" class="alert alert-danger">No Product Requests found.</div></div>
+      </div>
+      <table *ngIf="hasPendingProductRequests" class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Vendor Name</th>
+              <th scope="col">Product Category</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Price</th>
+              <th scope="col">Product Stock</th>
+              <th scope="col">Image</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of vendorProductDetails; let i = index">
+              <th scope="row">{{i+1}}.</th>
+              <td>{{product.vendorName}}</td>
+              <td>{{product.productCategory}}</td>
+              <td>{{product.productName}}</td>
+              <td>{{product.productPrice}}</td>
+              <td>{{product.productStock}}</td>
+              <td><button class="btn btn-warning">show image</button></td>
+              <td><button class="btn btn-danger" (click)="onProductReject(product.vendorName, product.productName, i)">Reject</button></td>
+              <td><button class="btn btn-success" (click)="onProductApprove(product.vendorName, product.productName, i)">Approve</button></td>
+            </tr>
+          </tbody>
+      </table>        
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Display Products to Customer</h5>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6"><div *ngIf="!hasApprovedProducts" class="alert alert-danger">No Product found.</div></div>
+      </div>
+      <table *ngIf="hasApprovedProducts" class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Vendor Name</th>
+              <th scope="col">Product Category</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Price</th>
+              <th scope="col">Product Stock</th>
+              <th scope="col">Image</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of showProductsToCustomer; let i = index">
+              <th scope="row">{{i+1}}.</th>
+              <td>{{product.vendorName}}</td>
+              <td>{{product.productCategory}}</td>
+              <td>{{product.productName}}</td>
+              <td>{{product.productPrice}}</td>
+              <td>{{product.productStock}}</td>
+              <td><button class="btn btn-warning">show image</button></td>
+              <td><button class="btn btn-info" (click)="onProductShow(product.vendorName, product.productName, i)">Display to Customer</button></td>
+            </tr>
+          </tbody>
+      </table>        
+  </div>
+</div>

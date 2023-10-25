@@ -1,0 +1,37 @@
+.row {
+    margin-left: 20px;
+}
+
+img {
+    height: 500px;
+}
+
+.col-sm-3 {
+    margin-right: 50px;
+}
+
+h5 {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 30px;
+    text-align: center;
+    margin: 0;
+    border: none;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-button {
+    padding: 5px 10px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+  }

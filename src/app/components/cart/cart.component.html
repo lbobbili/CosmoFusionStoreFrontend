@@ -1,0 +1,27 @@
+<div *ngIf="!displayProducts" class="alert alert-danger">No Items present in the cart</div>
+<div *ngIf="displayProducts">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Total Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products; let i = index">
+        <th scope="row">{{i+1}}.</th>
+        <td>{{product.brandName}} - {{product.productName}}</td>
+        <td>{{product.quantity}}</td>
+        <td>${{product.productPrice}}</td>
+        <td>${{product.quantity * product.productPrice}}</td>
+        <td><button class="btn btn-danger" (click)="onDelete(product.productName, product.brandName, i)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="btn btn-success checkout-button" (click)="onProceedToCheckout()">Proceed to Checkout</button>
+</div>

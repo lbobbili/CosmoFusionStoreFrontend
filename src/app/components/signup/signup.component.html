@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Sign Up</h3>
+                    <div class="card-text">
+                        <form>
+                            <div class="input-group input-group-lg input-margin">
+                                <span class="input-group-text" id="inputGroup-sizing-lg">First Name</span>
+                                <input ngModel name="firstName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+    
+                            <div class="input-group input-group-lg input-margin">
+                                <span class="input-group-text" id="inputGroup-sizing-lg">Last Name</span>
+                                <input ngModel name="lastName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+    
+                            <div class="input-group input-group-lg input-margin">
+                                <span class="input-group-text" id="inputGroup-sizing-lg">Email</span>
+                                <input ngModel name="email" type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+    
+                            <div class="input-group input-group-lg input-margin">
+                                <span class="input-group-text" id="inputGroup-sizing-lg">Password</span>
+                                <input ngModel name="password" type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+    
+                            <div class="input-group input-group-lg input-margin">
+                                <span class="input-group-text" id="inputGroup-sizing-lg">Phone Number</span>
+                                <input ngModel name="phoneNumber" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+        
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-light" type="submit">Register</button>
+                            </div>
+
+                            <h6>Already had account? <a routerLink="/login">Login Here</a></h6>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
