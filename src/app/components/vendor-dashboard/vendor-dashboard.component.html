@@ -15,11 +15,11 @@
         <form #productForm="ngForm" (ngSubmit)="submit(productForm)">
             <div class="input-group input-group-lg input-margin">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Vendor Name</span>
-                <input ngModel name="vendorName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                <input [(ngModel)]="vendorName" name="vendorName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
             </div>
             <div class="input-group input-group-lg input-margin">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Brand Name</span>
-                <input ngModel name="brandName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                <input [(ngModel)]="brandName" name="brandName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
             </div>
             <div class="input-group input-group-lg input-margin">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Product Category</span>
@@ -36,6 +36,11 @@
             <div class="input-group input-group-lg input-margin">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Product Stock</span>
                 <input ngModel name="productStock" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            </div>
+
+            <div class="input-group input-group-lg input-margin">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Product Description</span>
+                <input ngModel name="productDescription" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
             </div>
 
             <div class="d-grid gap-2">

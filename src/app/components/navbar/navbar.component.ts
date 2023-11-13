@@ -12,11 +12,13 @@ export class NavbarComponent {
 
   private reloadSubscription: Subscription | undefined;
   isLoggedIn: boolean = false;
+  isSignup : boolean = false;
 
   constructor(private router: Router, private navbarReload: NavbarReloadService) {
     this.reloadSubscription = this.navbarReload.reloadNavbarComponent$.subscribe(() => {
       let isCustomerLogin = localStorage.getItem('isLogin');
       if (isCustomerLogin == "true") this.isLoggedIn = true;
+
     });
   }
 

@@ -4,23 +4,31 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Login</h3>
+                    <h3 *ngIf="!isAdminLogin" class="card-title">Login</h3>
+                    <h3 *ngIf="isAdminLogin"  class="card-title">Admin Login</h3>
+                    <div *ngIf="isAccountPending" class="alert alert-warning">Your account is pending please wait for the approval</div>
+                    <div *ngIf="isAccountRejected" class="alert alert-danger">Your account is rejected by admin</div>
+                    <div *ngIf="!isLoginSuccess && loginResponse.email == 'Not Found' " class="alert alert-danger">Invalid Credentials</div>
                     <div class="card-text">
+                        <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
                         <div class="input-group input-group-lg email-margin">
                             <span class="input-group-text" id="inputGroup-sizing-lg">Email</span>
-                            <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            <input  ngModel name="email" type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                           </div>
 
                           <div class="input-group input-group-lg password-margin">
                             <span class="input-group-text" id="inputGroup-sizing-lg">Password</span>
-                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            <input ngModel name="password" type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                           </div>
 
                           <div class="d-grid gap-2">
-                            <button class="btn btn-light" type="button" (click)="onLogin()">Login</button>
+                            <button class="btn btn-light" type="submit">Login</button>
                           </div>
+                          </form>
 
                           <h6>Don't have an account? <a routerLink="/signup">Signup Here</a></h6>
+                          <h6>Vendor Login? <a routerLink="/vendor-login">Login Here</a></h6>
+                          <h6>Admin Login?<a class="admin-login" (click)="onAdminLogin()">Login Here</a></h6>
                     </div>
                 </div>
             </div>

@@ -22,13 +22,19 @@ export class CartComponent {
   }
 
   onDelete(productName: string, brandName: string, index: number) {
-    let finalProducts = this.products.filter((product) => product.productName !== productName && product.brandName !== brandName);
-    if(finalProducts.length === 0) {
+
+    for(let i=0; i<this.products.length;i++){
+      if(this.products[i].productName == productName && this.products[i].brandName == brandName){
+        this.products.splice(i,1);
+      }
+    }
+
+    if(this.products.length == 0){
       localStorage.removeItem('productsFromViewPage');
       this.displayProducts = false;
     }
-    else localStorage.setItem('productsFromViewPage', JSON.stringify(finalProducts));
-    this.products.splice(index, 1);
+    else localStorage.setItem('productsFromViewPage', JSON.stringify(this.products));
+    
   }
 
   onProceedToCheckout() {

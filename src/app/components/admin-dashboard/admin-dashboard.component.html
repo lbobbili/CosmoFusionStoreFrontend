@@ -24,12 +24,12 @@
                 <th scope="row">{{i+1}}.</th>
                 <td>{{ vendor.vendorCompany }}</td>
                 <td>{{ vendor.vendorName }}</td>
-                <td>{{ vendor.vendorDetails }}</td>
+                <td>{{ vendor.detailsAboutVendor }}</td>
                 <td>{{ vendor.brandName }}</td>
                 <td>{{ vendor.email }}</td>
                 <td>{{ vendor.phoneNumber }}</td>
-                <td><button class="btn btn-danger" (click)="onSignupReject(vendor.vendorName, i)">Reject</button></td>
-                <td><button class="btn btn-success" (click)="onSignupApprove(vendor.vendorName, i)">Approve</button></td>
+                <td><button class="btn btn-danger" (click)="onSignupReject(vendor.email, i)">Reject</button></td>
+                <td><button class="btn btn-success" (click)="onSignupApprove(vendor.email, i)">Approve</button></td>
               </tr>
             </tbody>
         </table>        
@@ -68,8 +68,9 @@
               <td>{{product.productPrice}}</td>
               <td>{{product.productStock}}</td>
               <td><button class="btn btn-warning">show image</button></td>
-              <td><button class="btn btn-danger" (click)="onProductReject(product.vendorName, product.productName, i)">Reject</button></td>
-              <td><button class="btn btn-success" (click)="onProductApprove(product.vendorName, product.productName, i)">Approve</button></td>
+              <td><button class="btn btn-danger" (click)="onProductReject(product.productName, i)">Reject</button></td>
+              <td><button class="btn btn-success" (click)="onProductApprove(product.productName, i)">Approve</button></td>
+               
             </tr>
           </tbody>
       </table>        
@@ -109,6 +110,7 @@
               <td>{{product.productStock}}</td>
               <td><button class="btn btn-warning">show image</button></td>
               <td><button class="btn btn-info" (click)="onProductShow(product.vendorName, product.productName, i)">Display to Customer</button></td>
+             
             </tr>
           </tbody>
       </table>        

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductDetails } from 'src/app/models/vendor.product.details.model';
+import { ProductDetails } from 'src/app/models/product-details.model';
+
 
 @Component({
   selector: 'app-view-product-details',

@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <h3 class="card-title">Sign Up</h3>
                     <div class="card-text">
-                        <form>
+                        <form  #signupForm="ngForm" (ngSubmit)="submit(signupForm)">
                             <div class="input-group input-group-lg input-margin">
                                 <span class="input-group-text" id="inputGroup-sizing-lg">First Name</span>
                                 <input ngModel name="firstName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
@@ -37,6 +37,7 @@
                             </div>
 
                             <h6>Already had account? <a routerLink="/login">Login Here</a></h6>
+                            <h6>Vendor Signup? <a routerLink="/vendor-signup">Signup Here</a></h6>
 
                         </form>
 

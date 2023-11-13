@@ -1,7 +1,7 @@
 <div class="row">
     <div *ngIf="isProductAdded" class="alert alert-success">Successfully added {{product.productName}} to the cart.</div>
     <div class="col-sm-3">
-        <img src={{product.imagePath}} alt="image">
+        <img src={{product.productImage}} alt="image">
     </div>
     <div class="col-sm-2"></div>
     <div class="col-sm-6">
@@ -9,7 +9,7 @@
         <h6>{{product.productName}}</h6>
         <hr>
         <h5>Description</h5>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident atque recusandae quidem quae. Nostrum, deserunt. At ad corporis totam illum!</p>
+        <p>{{product.productDescription}}</p>
         <hr>
         <h5>Price - ${{product.productPrice}}</h5>
         <hr>

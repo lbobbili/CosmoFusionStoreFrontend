@@ -7,4 +7,5 @@ export interface VendorDetails {
     vendorCompany: string;
     vendorDetails: string;
     vendorName: string;
+    vendorId:number;
 }

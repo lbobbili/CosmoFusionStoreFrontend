@@ -16,6 +16,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { VendorDashboardComponent } from './components/vendor-dashboard/vendor-dashboard.component';
 import { VendorSignupComponent } from './components/vendor-signup/vendor-signup.component';
+import { HttpClientModule } from '@angular/common/http';
+import { VendorLoginComponent } from './components/vendor-login/vendor-login.component';
 
 @NgModule({
   declarations: [
@@ -30,12 +32,14 @@ import { VendorSignupComponent } from './components/vendor-signup/vendor-signup.
     CheckoutComponent,
     AdminDashboardComponent,
     VendorDashboardComponent,
-    VendorSignupComponent
+    VendorSignupComponent,
+    VendorLoginComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'login', component: LoginComponent },
@@ -45,7 +49,8 @@ import { VendorSignupComponent } from './components/vendor-signup/vendor-signup.
       { path: 'checkout', component: CheckoutComponent },
       { path: 'admin-dashboard', component: AdminDashboardComponent },
       { path: 'vendor-dashboard', component: VendorDashboardComponent },
-      { path: 'vendor-signup', component: VendorSignupComponent }
+      { path: 'vendor-signup', component: VendorSignupComponent },
+      { path: 'vendor-login', component: VendorLoginComponent }
     ])
   ],
   providers: [],

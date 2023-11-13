@@ -6,7 +6,7 @@ export interface ProductDetails {
     productStock: number;
     vendorName: string;
     brandName: string;
-    imagePath: string;
+    productImage: string;
     image: string;
     quantity: number;
 }

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { VendorDetails } from 'src/app/models/vendor.details.model';
 import { ProductDetails } from 'src/app/models/vendor.product.details.model';
+import { RetriveProductStatusService } from 'src/app/service/retriveProductStatus/retrive-product-status.service';
+import { RetriveRegistrationsService } from 'src/app/service/retriveRegistrations/retrive-registrations.service';
+import { UpdateRegistrationStatusService } from 'src/app/service/updateRegistrationStatus/update-registration-status.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,158 +13,159 @@ import { ProductDetails } from 'src/app/models/vendor.product.details.model';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  vendorDetails: VendorDetails[] = [];
-  vendorProductDetails: ProductDetails[] = [];
-  showProductsToCustomer: ProductDetails[] = [];
+  vendorDetails: any;
+  vendorProductDetails: any;
+  showProductsToCustomer: any;
 
   hasPendingSignupRequests: boolean = false;
   hasPendingProductRequests: boolean = false;
   hasApprovedProducts: boolean = false;
 
+  constructor(private retriveStatus: RetriveRegistrationsService, private updateStatus : UpdateRegistrationStatusService,
+    private retriveProductStatus: RetriveProductStatusService){
+
+  }
+
   ngOnInit(): void {
-    let vendorDetailsString = localStorage.getItem('vendorDetails');
-    if(vendorDetailsString != null) {
-      let vendorDetailsParse = JSON.parse(vendorDetailsString);
-      for(let i = 0; i < vendorDetailsParse.length; i++) {
-        let vendor = vendorDetailsParse[i];
-        if(vendor.status === "PENDING") {
-          this.vendorDetails.push(vendor);
-          this.hasPendingSignupRequests = true;
+    this.retriveStatus.retriveByStatus("PENDING").subscribe(response => { 
+      this.vendorDetails = response;
+      this.hasPendingSignupRequests = true;
+    });
+
+
+    this.retriveProductStatus.retriveProductStatus("PENDING").subscribe(response => { 
+      this.vendorProductDetails = response;
+      this.hasPendingProductRequests = true;
+
+    });
+
+    
+    this.retriveProductStatus.retriveProductStatus("APPROVED").subscribe(response => { 
+      this.showProductsToCustomer = response;
+      this.hasApprovedProducts = true;
+
+    });
+    }
+
+  onSignupReject(email: string, index: number) {
+
+    for(let i=0; i<this.vendorDetails.length;i++){
+      if(this.vendorDetails[i].email == email){
+       let id =  this.vendorDetails[i].vendorId;
+       let request = {
+        userId: id,
+        registrationStatus:"REJECTED"
+       };
+       this.updateStatus.updateStatus(request).subscribe(response => {
+        if(response.status == "SUCCESS"){
+        this.vendorDetails.splice(index, 1);
+        console.log(this.vendorDetails.length);
+        if(this.vendorDetails.length == 0){
+          this.hasPendingSignupRequests = false;
         }
-      }
-    }
-
-
-    let vendorProductsString = localStorage.getItem('vendorSubmittedProduct');
-    if(vendorProductsString != null) {
-      let vendorProductsParse = JSON.parse(vendorProductsString);
-      for(let i = 0; i < vendorProductsParse.length; i++) {
-        let product = vendorProductsParse[i];
-        if(product.status === "PENDING") {
-          this.vendorProductDetails.push(product);
-          this.hasPendingProductRequests = true;
         }
-      }
-    }
 
-    let approvedProductsString = localStorage.getItem('vendorApprovedProducts');
-    if(approvedProductsString != null) {
-      let approvedProductsParse = JSON.parse(approvedProductsString);
-      for(let i = 0; i < approvedProductsParse.length; i++) {
-        let product = approvedProductsParse[i];
-        if(product.status === "APPROVED") {
-          this.showProductsToCustomer.push(product);
-          this.hasApprovedProducts = true;
-        }
+       });
       }
-    }
-
-  }
-
-  onSignupReject(vendorName: string, index: number) {
-    for(let i = 0; i < this.vendorDetails.length; i++) {
-      let vendor = this.vendorDetails[i];
-      if(vendor.vendorName === vendorName) {
-        vendor.status = "REJECTED";
-      }
-    }
-    localStorage.setItem('vendorDetails', JSON.stringify(this.vendorDetails));
-    this.vendorDetails.splice(index, 1);
-    let pendingStatuses = this.vendorDetails.filter((vendorDetails) => vendorDetails.status === "PENDING");
-    if(pendingStatuses.length === 0) {
-      this.hasPendingSignupRequests = false;
+      
     }
   }
 
 
-  onSignupApprove(vendorName: string, index: number) {
-    for(let i = 0; i < this.vendorDetails.length; i++) {
-      let vendor = this.vendorDetails[i];
-      if(vendor.vendorName === vendorName) {
-        vendor.status = "APPROVED";
-      }
-    }
-    localStorage.setItem('vendorDetails', JSON.stringify(this.vendorDetails));
-    this.vendorDetails.splice(index, 1);
-    let pendingStatuses = this.vendorDetails.filter((vendorDetails) => vendorDetails.status === "PENDING");
-    if(pendingStatuses.length === 0) {
-      this.hasPendingSignupRequests = false;
-    }
-  }
-
-
-  onProductReject(vendorName: string, productName: string, index: number) {
-    for(let i = 0; i < this.vendorProductDetails.length; i++) {
-      let product = this.vendorProductDetails[i];
-      if(product.vendorName === vendorName && product.productName === productName) {
-        product.status = "REJECTED";
-        let vendorRejectedProductString = localStorage.getItem('vendorRejectedProducts');
-        let rejectedProducts: ProductDetails[] = [];
-        if(vendorRejectedProductString == null) {
-          rejectedProducts = [product];
-        } else {
-          rejectedProducts = JSON.parse(vendorRejectedProductString);
-          rejectedProducts.push(product);
+  onSignupApprove(email: string, index: number) {
+    for(let i=0; i<this.vendorDetails.length;i++){
+      if(this.vendorDetails[i].email == email){
+       let id =  this.vendorDetails[i].vendorId;
+       let request = {
+        userId: id,
+        registrationStatus:"APPROVED"
+       };
+       this.updateStatus.updateStatus(request).subscribe(response => {
+        if(response.status == "SUCCESS"){
+        this.vendorDetails.splice(index, 1);
+        console.log(this.vendorDetails.length);
+        if(this.vendorDetails.length == 0){
+          this.hasPendingSignupRequests = false;
         }
-        localStorage.setItem('vendorRejectedProducts', JSON.stringify(rejectedProducts));
-      }
-    }
-    this.vendorDetails.splice(index, 1);
-    let pendingStatuses = this.vendorProductDetails.filter((productDetails) => productDetails.status === "PENDING");
-    if(pendingStatuses.length === 0) {
-      this.hasPendingProductRequests = false;
-    }
-  }
-
-
-  onProductApprove(vendorName: string, productName: string, index: number) {
-    for(let i = 0; i < this.vendorProductDetails.length; i++) {
-      let product = this.vendorProductDetails[i];
-      if(product.vendorName === vendorName && product.productName === productName) {
-        product.status = "APPROVED";
-        let vendorApprovedProductString = localStorage.getItem('vendorApprovedProducts');
-        let approvedProducts: ProductDetails[] = [];
-        if(vendorApprovedProductString == null) {
-          approvedProducts = [product];
-        } else {
-          approvedProducts = JSON.parse(vendorApprovedProductString);
-          approvedProducts.push(product);
         }
-        localStorage.setItem('vendorApprovedProducts', JSON.stringify(approvedProducts));
+
+       });
+      }
+  }
+}
+
+
+   onProductReject(productName: string, index: number) {
+
+    for(let i=0; i<this.vendorProductDetails.length;i++){
+      if(this.vendorProductDetails[i].productName == productName){
+       let id =  this.vendorProductDetails[i].productId;
+       let request = {
+        productId: id,
+        status:"REJECTED"
+       };
+       this.updateStatus.updateProductStatus(request).subscribe(response => {
+        if(response.status == "SUCCESS"){
+        this.vendorProductDetails.splice(index, 1);
+        console.log(this.vendorDetails.length);
+        if(this.vendorProductDetails.length == 0){
+          this.hasPendingProductRequests = false;
+        }
+        }
+
+       });
       }
     }
-    localStorage.setItem('vendorSubmittedProduct', JSON.stringify(this.vendorProductDetails));
-    this.vendorProductDetails.splice(index, 1);
-    let pendingStatuses = this.vendorProductDetails.filter((productDetails) => productDetails.status === "PENDING");
-    if(pendingStatuses.length === 0) {
-      this.hasPendingProductRequests = false;
-    }
   }
+
+
+   onProductApprove(productName: string, index: number) {
+
+
+    for(let i=0; i<this.vendorProductDetails.length;i++){
+      if(this.vendorProductDetails[i].productName == productName){
+       let id =  this.vendorProductDetails[i].productId;
+       let request = {
+        productId: id,
+        status:"APPROVED"
+       };
+       this.updateStatus.updateProductStatus(request).subscribe(response => {
+        if(response.status == "SUCCESS"){
+        this.vendorProductDetails.splice(index, 1);
+        console.log(this.vendorDetails.length);
+        if(this.vendorProductDetails.length == 0){
+          this.hasPendingProductRequests = false;
+        }
+        }
+
+       });
+      }
+    }
+   }
 
   onProductShow(vendorName: string, productName: string, index: number) {
-    for(let i = 0; i < this.showProductsToCustomer.length; i++) {
-      let product = this.showProductsToCustomer[i];
-      if(product.vendorName === vendorName && product.productName === productName && product.status === "APPROVED") {
-        product.status = "SHOW_CUSTOMER";
+
+
+    for(let i=0; i<this.showProductsToCustomer.length;i++){
+      if(this.showProductsToCustomer[i].productName == productName){
+       let id =  this.showProductsToCustomer[i].productId;
+       let request = {
+        productId: id,
+        status:"ADD_TO_CUSTOMER_VIEW"
+       };
+       this.updateStatus.updateProductStatus(request).subscribe(response => {
+        if(response.status == "SUCCESS"){
+        this.showProductsToCustomer.splice(index, 1);
+        console.log(this.vendorDetails.length);
+        if(this.showProductsToCustomer.length == 0){
+          this.hasApprovedProducts = false;
+        }
+        }
+
+       });
       }
-      let showProductsToCustomerString = localStorage.getItem('showProductsToCustomer');
-      let showProductsToCustomer: ProductDetails[] = [];
-      if(showProductsToCustomerString == null) {
-        showProductsToCustomer = [product];
-      } else {
-        let showProductsToCustomerParse = JSON.parse(showProductsToCustomerString);
-        showProductsToCustomerParse.push(product);
-        showProductsToCustomer = showProductsToCustomerParse;
-      }
-      localStorage.setItem('showProductsToCustomer', JSON.stringify(showProductsToCustomer));
     }
-    localStorage.setItem('vendorApprovedProducts', JSON.stringify(this.showProductsToCustomer));
-    this.showProductsToCustomer.splice(index, 1);
-    let approvedStatuses = this.showProductsToCustomer.filter((productDetails) => productDetails.status === "APPROVED");
-    if(approvedStatuses.length === 0) {
-      this.hasApprovedProducts = false;
-    }
+
   }
 
-
-}
+  }
