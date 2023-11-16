@@ -12,37 +12,38 @@ import { NavbarReloadService } from 'src/app/service/navbarReload/navbar-reload.
 export class LoginComponent {
 
 
-  isLoginSuccess : boolean = false;
-  isAdminLogin :boolean = false;
+  isLoginSuccess: boolean = false;
+  isAdminLogin: boolean = false;
   loginResponse: Login = {
-   firstName : "",
-   lastName : "",
-   email:"",
-   status:"",
-   admin:false
+    firstName: "",
+    lastName: "",
+    email: "",
+    status: "",
+    admin: false
   };
 
-  isAccountPending : boolean = false;
-  isAccountRejected : boolean = false;
+  isAccountPending: boolean = false;
+  isAccountRejected: boolean = false;
 
-  onLogin(loginForm:any) {
-   this.login.login(loginForm.value).subscribe(response => {
-    if(response.firstName!=null && !response.admin){
-      this.isLoginSuccess = true;
-      this.router.navigate(["/"]);
-       localStorage.setItem("isLogin", "true");
-       this.navbarReload.triggerReloadNavbar();
-      
-    } else{
-      this.isLoginSuccess = false;
-      this.router.navigate(["/admin-dashboard"]);
-      localStorage.setItem("isLogin", "true");
-      this.navbarReload.triggerReloadNavbar();
-    }
+  onLogin(loginForm: any) {
+    this.login.login(loginForm.value).subscribe(response => {
+      if (response.firstName != null && !response.admin) {
+        this.isLoginSuccess = true;
+        this.router.navigate(["/"]);
+        localStorage.setItem("isLogin", "true");
+        this.navbarReload.triggerReloadNavbar();
+
+      } else if (response.firstName != null && response.admin) {
+        this.isLoginSuccess = true;
+        this.router.navigate(["/admin-dashboard"]);
+        localStorage.setItem("isLogin", "true");
+        this.navbarReload.triggerReloadNavbar();
+      }
+      this.loginResponse = response;
     });
   }
 
-  onAdminLogin(){
+  onAdminLogin() {
     this.isAdminLogin = true;
     this.router.navigate(["/login"]);
 
@@ -50,12 +51,12 @@ export class LoginComponent {
 
 
 
-   constructor(private login: LoginService, private router: Router, private navbarReload: NavbarReloadService){
+  constructor(private login: LoginService, private router: Router, private navbarReload: NavbarReloadService) {
 
   }
 
   // constructor(private router: Router, private navbarReload: NavbarReloadService) {
-    
+
   // }
 
   // onLogin() {
